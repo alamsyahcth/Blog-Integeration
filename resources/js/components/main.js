@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Route, NavLink, HashRouter } from 'react-router-dom';
+import { Route, NavLink, HashRouter, BrowserRouter } from 'react-router-dom';
 import { makeStyles, useTheme, createMuiTheme } from '@material-ui/core/styles';
 import { Drawer, AppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 
@@ -13,44 +13,46 @@ function Main () {
   const classes = useStyles();
   return (
     <HashRouter>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" noWrap>
-              Clipped drawer
-          </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <Toolbar />
-          <div className={classes.drawerContainer}>
-            <List component="nav" aria-label="main mailbox folders">
-              <NavLink to="/" style={{textDecoration:'none'}}>
-                <ListItem button>
-                  <ListItemIcon>
-                    <MailIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Post" />
-                </ListItem>
-              </NavLink>
-            </List>
-            <Divider />
-          </div>
-        </Drawer>
-        <main className={classes.content}>
-          <div>
+      <BrowserRouter>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar position="fixed" className={classes.appBar}>
+            <Toolbar>
+              <Typography variant="h6" noWrap>
+                Tahta CMS
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
             <Toolbar />
-            <Route exact path="/" component={Post}/>
-          </div>
-        </main>
-      </div>
+            <div className={classes.drawerContainer}>
+              <List component="nav" aria-label="main mailbox folders">
+                <NavLink to="/" style={{textDecoration:'none'}}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <MailIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Post" />
+                  </ListItem>
+                </NavLink>
+              </List>
+              <Divider />
+            </div>
+          </Drawer>
+          <main className={classes.content}>
+            <div>
+              <Toolbar />
+              <Route exact path="/" component={Post}/>
+            </div>
+          </main>
+        </div>
+      </BrowserRouter>
     </HashRouter>
   )
 }

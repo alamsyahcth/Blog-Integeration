@@ -82443,7 +82443,7 @@ var drawerWidth = 240;
 
 function Main() {
   var classes = useStyles();
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["HashRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["HashRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.root
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core___WEBPACK_IMPORTED_MODULE_3__["CssBaseline"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core___WEBPACK_IMPORTED_MODULE_3__["AppBar"], {
     position: "fixed",
@@ -82451,7 +82451,7 @@ function Main() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core___WEBPACK_IMPORTED_MODULE_3__["Toolbar"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core___WEBPACK_IMPORTED_MODULE_3__["Typography"], {
     variant: "h6",
     noWrap: true
-  }, "Clipped drawer"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core___WEBPACK_IMPORTED_MODULE_3__["Drawer"], {
+  }, "Tahta CMS"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core___WEBPACK_IMPORTED_MODULE_3__["Drawer"], {
     className: classes.drawer,
     variant: "permanent",
     classes: {
@@ -82477,7 +82477,7 @@ function Main() {
     exact: true,
     path: "/",
     component: _post__WEBPACK_IMPORTED_MODULE_5__["default"]
-  })))));
+  }))))));
 }
 
 var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["makeStyles"])(function (theme) {
@@ -82551,14 +82551,23 @@ var Index = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Index);
 
-  function Index(props) {
+  function Index() {
     var _this;
 
     _classCallCheck(this, Index);
 
-    _this = _super.call(this, props);
+    _this = _super.call(this);
     _this.state = {
-      posts: []
+      posts: [],
+      newData: {
+        title: '',
+        content: ''
+      },
+      editData: {
+        id: '',
+        title: '',
+        content: ''
+      }
     };
     return _this;
   }
@@ -82566,32 +82575,209 @@ var Index = /*#__PURE__*/function (_Component) {
   _createClass(Index, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.refreshData();
+    }
+  }, {
+    key: "refreshData",
+    value: function refreshData() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('http://localhost:8000/api/post').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("http://localhost:8000/api/post").then(function (response) {
         _this2.setState({
           posts: response.data
         });
       });
     }
   }, {
-    key: "render",
-    value: function render() {
-      var post = this.state.posts.map(function (post) {
+    key: "handleAdd",
+    value: function handleAdd() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/post/store", this.state.newData).then(function (response) {
+        _this3.setState({
+          newData: {
+            title: '',
+            content: ''
+          }
+        });
+
+        _this3.refreshData();
+      });
+    }
+  }, {
+    key: "handleEdit",
+    value: function handleEdit() {
+      var _this4 = this;
+
+      var _this$state$editData = this.state.editData,
+          title = _this$state$editData.title,
+          content = _this$state$editData.content;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/post/update/" + this.state.editData.id, {
+        title: title,
+        content: content
+      }).then(function (response) {
+        _this4.setState({
+          editData: {
+            id: '',
+            title: '',
+            content: ''
+          }
+        });
+
+        _this4.refreshData();
+      });
+    }
+  }, {
+    key: "handleDelete",
+    value: function handleDelete(id) {
+      var _this5 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/post/delete/" + id).then(function (response) {
+        _this5.refreshData();
+      });
+    }
+  }, {
+    key: "update",
+    value: function update(id, title, content) {
+      this.setState({
+        editData: {
+          id: id,
+          title: title,
+          content: content
+        }
+      });
+    }
+  }, {
+    key: "handleRetrieve",
+    value: function handleRetrieve() {
+      var _this6 = this;
+
+      return this.state.posts.map(function (post) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: post.id
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, post.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, post.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, post.slug), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, post.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          onClick: _this6.update.bind(_this6, post.id, post.title, post.content),
           className: "btn btn-sm btn-primary btn-block m-1 "
         }, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          onClick: _this6.handleDelete.bind(_this6, post.id),
           className: "btn btn-sm btn-danger btn-block m-1"
         }, "Hapus")));
       });
+    }
+  }, {
+    key: "toggleAdd",
+    value: function toggleAdd() {
+      var _this7 = this;
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card-body"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+        className: "text-center m-3"
+      }, "Add Data"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "form-horizontal"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        className: "form-control mb-2",
+        placeholder: "Title",
+        value: this.state.newData.title,
+        onChange: function onChange(e) {
+          var newData = _this7.state.newData;
+          newData.title = e.target.value;
+
+          _this7.setState({
+            newData: newData
+          });
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        type: "textarea",
+        className: "form-control mb-2",
+        placeholder: "Content",
+        value: this.state.newData.content,
+        onChange: function onChange(e) {
+          var newData = _this7.state.newData;
+          newData.content = e.target.value;
+
+          _this7.setState({
+            newData: newData
+          });
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn btn-md btn-primary btn-block",
+        onClick: this.handleAdd.bind(this)
+      }, "Simpan")));
+    }
+  }, {
+    key: "toggleEdit",
+    value: function toggleEdit() {
+      var _this8 = this;
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card-body"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+        className: "text-center m-3"
+      }, "Edit Data"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "form-horizontal"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        className: "form-control mb-2",
+        placeholder: "Title",
+        value: this.state.editData.title,
+        onChange: function onChange(e) {
+          var editData = _this8.state.editData;
+          editData.title = e.target.value;
+
+          _this8.setState({
+            editData: editData
+          });
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        type: "textarea",
+        className: "form-control mb-2",
+        placeholder: "Content",
+        value: this.state.editData.content,
+        onChange: function onChange(e) {
+          var editData = _this8.state.editData;
+          editData.content = e.target.value;
+
+          _this8.setState({
+            editData: editData
+          });
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn btn-md btn-primary btn-block",
+        onClick: this.handleEdit.bind(this)
+      }, "Update")));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this9 = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-4"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.toggleAdd()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.toggleEdit()))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-8"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card-body"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn btn-primary btn-md mb-2",
+        onClick: function onClick() {
+          return _this9.setState({
+            toggleAddCard: true
+          });
+        }
+      }, "Add Data"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         className: "table",
         width: "100%"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "#"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Slug"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Content"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Action"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, post)));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "#"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Slug"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Content"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Action"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, this.handleRetrieve())))))));
     }
   }]);
 

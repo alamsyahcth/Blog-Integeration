@@ -9,7 +9,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $data = Post::get();
+        return Post::all();
 
         if (count($data) > 0) 
         {
@@ -21,7 +21,6 @@ class PostController extends Controller
         else
         {
             $res['message'] = 'failed';
-
             return response($res,400);
         }
     }
