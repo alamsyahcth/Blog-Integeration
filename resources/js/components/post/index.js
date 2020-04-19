@@ -16,6 +16,8 @@ class Index extends Component {
         title:'',
         content:'',
       },
+      addContainer:true,
+      editContainer:false,
     }
   }
   
@@ -55,7 +57,9 @@ class Index extends Component {
           id:'',
           title:'',
           content:'',
-        }
+        },
+        addContainer: true,
+        editContainer: false,
       })
       this.refreshData();
     })
@@ -70,7 +74,16 @@ class Index extends Component {
 
   update(id, title, content) {
     this.setState({
+      addContainer:false,
+      editContainer:true,
       editData:{id, title, content}
+    })
+  }
+
+  onClickAdd() {
+    this.setState({
+      addContainer: true,
+      editContainer:false,
     })
   }
 
@@ -167,10 +180,14 @@ class Index extends Component {
         <div className="row">
           <div className="col-md-4">
             <div className="card">
-              <div>
+              <div
+                style={{display: this.state.addContainer ? 'block' : 'none'}}
+              >
                 {this.toggleAdd()}
               </div>
-              <div>
+              <div
+                style={{ display: this.state.editContainer ? 'block' : 'none' }}
+              >
                 {this.toggleEdit()}
               </div>
             </div>
@@ -178,7 +195,7 @@ class Index extends Component {
           <div className="col-md-8">
             <div className="card">
               <div className="card-body">
-                <button className="btn btn-primary btn-md mb-2" onClick={() => this.setState({toggleAddCard:true})}>Add Data</button>
+                <button className="btn btn-primary btn-md mb-2" onClick={this.onClickAdd.bind(this)}>Add Data</button>
                 <table className="table" width="100%">
                   <thead>
                     <tr>

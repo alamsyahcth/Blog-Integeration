@@ -82486,11 +82486,14 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["ma
       display: 'flex'
     },
     appBar: {
-      zIndex: theme.zIndex.drawer + 1
+      zIndex: theme.zIndex.drawer + 1,
+      backgroundColor: '#0779e4',
+      boxShadow: 'none'
     },
     drawer: {
       width: drawerWidth,
-      flexShrink: 0
+      flexShrink: 0,
+      borderWidth: 0
     },
     drawerPaper: {
       width: drawerWidth
@@ -82567,7 +82570,9 @@ var Index = /*#__PURE__*/function (_Component) {
         id: '',
         title: '',
         content: ''
-      }
+      },
+      addContainer: true,
+      editContainer: false
     };
     return _this;
   }
@@ -82621,7 +82626,9 @@ var Index = /*#__PURE__*/function (_Component) {
             id: '',
             title: '',
             content: ''
-          }
+          },
+          addContainer: true,
+          editContainer: false
         });
 
         _this4.refreshData();
@@ -82640,11 +82647,21 @@ var Index = /*#__PURE__*/function (_Component) {
     key: "update",
     value: function update(id, title, content) {
       this.setState({
+        addContainer: false,
+        editContainer: true,
         editData: {
           id: id,
           title: title,
           content: content
         }
+      });
+    }
+  }, {
+    key: "onClickAdd",
+    value: function onClickAdd() {
+      this.setState({
+        addContainer: true,
+        editContainer: false
       });
     }
   }, {
@@ -82751,8 +82768,6 @@ var Index = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this9 = this;
-
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -82761,7 +82776,15 @@ var Index = /*#__PURE__*/function (_Component) {
         className: "col-md-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.toggleAdd()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.toggleEdit()))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          display: this.state.addContainer ? 'block' : 'none'
+        }
+      }, this.toggleAdd()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          display: this.state.editContainer ? 'block' : 'none'
+        }
+      }, this.toggleEdit()))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card"
@@ -82769,11 +82792,7 @@ var Index = /*#__PURE__*/function (_Component) {
         className: "card-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "btn btn-primary btn-md mb-2",
-        onClick: function onClick() {
-          return _this9.setState({
-            toggleAddCard: true
-          });
-        }
+        onClick: this.onClickAdd.bind(this)
       }, "Add Data"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         className: "table",
         width: "100%"

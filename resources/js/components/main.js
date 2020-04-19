@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Route, NavLink, HashRouter, BrowserRouter } from 'react-router-dom';
-import { makeStyles, useTheme, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Drawer, AppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 
 import MailIcon from '@material-ui/icons/Mail';
@@ -11,6 +11,7 @@ const drawerWidth = 240;
 
 function Main () {
   const classes = useStyles();
+
   return (
     <HashRouter>
       <BrowserRouter>
@@ -20,7 +21,7 @@ function Main () {
             <Toolbar>
               <Typography variant="h6" noWrap>
                 Tahta CMS
-              </Typography>
+            </Typography>
             </Toolbar>
           </AppBar>
           <Drawer
@@ -33,7 +34,7 @@ function Main () {
             <Toolbar />
             <div className={classes.drawerContainer}>
               <List component="nav" aria-label="main mailbox folders">
-                <NavLink to="/" style={{textDecoration:'none'}}>
+                <NavLink to="/" style={{ textDecoration: 'none' }}>
                   <ListItem button>
                     <ListItemIcon>
                       <MailIcon />
@@ -48,7 +49,7 @@ function Main () {
           <main className={classes.content}>
             <div>
               <Toolbar />
-              <Route exact path="/" component={Post}/>
+              <Route exact path="/" component={Post} />
             </div>
           </main>
         </div>
@@ -63,10 +64,13 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor:'#0779e4',
+    boxShadow:'none',
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    borderWidth:0,
   },
   drawerPaper: {
     width: drawerWidth,
